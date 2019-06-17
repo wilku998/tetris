@@ -1,0 +1,8 @@
+node_modules/
+public/dist/
+.env.test
+.env.development
+git.txt
+git-2.txt
+grid.scss
+typescript.ts
