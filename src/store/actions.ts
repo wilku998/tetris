@@ -1,16 +1,28 @@
-import { generateBlock, changeBlockYPosition, changeBlockXPosition } from './actionsNames';
+import {
+  generateBlock,
+  changeBlockYPosition,
+  changeBlockXPosition,
+  togglePauze
+} from "./actionsNames";
 
 export const generateBlockAction = () => ({
-    type: generateBlock
+  type: generateBlock
 });
 
-export const changeBlockXPositionAction = (moveXRequest: number, id: number) => ({
-    type: changeBlockXPosition,
-    moveXRequest,
-    id
-})
+export const changeBlockXPositionAction = (
+  moveXRequest: number,
+  id: number
+) => ({
+  type: changeBlockXPosition,
+  moveXRequest,
+  id
+});
 
 export const changeBlockYPositionAction = (id: number) => ({
-    type: changeBlockYPosition,
-    id
-})
+  type: changeBlockYPosition,
+  id
+});
+
+export const togglePauzeAction = () => ({
+  type: togglePauze
+});

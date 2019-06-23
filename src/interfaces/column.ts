@@ -1,7 +1,5 @@
 export default interface columun {
-    column: {
-        rows: Array<{
-            fieldEmpty: boolean
-        }>
-    }
+  rows: Array<{
+    fieldEmpty: boolean;
+  }>;
 }

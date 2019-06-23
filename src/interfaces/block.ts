@@ -1,8 +1,13 @@
 export default interface {
-    Block: React.FunctionComponent;
-    position: {
-        x: number,
-        y: number
-    }
-    id: number
+    squares: Array<{
+        id: string,
+        position: {
+            x: number,
+            y: number
+        }
+    }>
+    id: string
+    color: string,
+    isActive: boolean,
+    defaultPosition: boolean,
 }

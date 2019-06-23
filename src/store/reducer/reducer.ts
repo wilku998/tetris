@@ -1,14 +1,20 @@
 import {
   changeBlockYPosition,
   changeBlockXPosition,
-  generateBlock
+  generateBlock,
+  togglePauze
 } from "../actionsNames";
 
 import initialState from "./initialState";
 import generateBlockFunc from "./functions/generateBlockFunc";
 import changeFullRowFieldsStatus from "./functions/changeFullRowFieldsStatus";
-import changeFieldStatus from "./functions/changeFieldStatus";
+import changeFieldsStatus from "./functions/changeFieldsStatus";
 import changeBlockPositionFunc from "./functions/changeBlockPositionFunc";
+import findFullRows from "./functions/findFullRows";
+import checkIfCanGoDown from "./functions/checkIfCanGoDown";
+import checkIfCanTurn from "./functions/checkIfCanTurn";
+import filterFullRowBlocks from "./functions/filterFullRowBlocks";
+import cloneColumns from "./functions/cloneColumns";
 
 interface actionI {
   type: string;
@@ -22,82 +28,80 @@ interface actionI {
 
 export default (state = initialState, action: actionI) => {
   const { type, id, moveXRequest } = action;
-  const { columns, blocks } = state;
-  const { position } = state.blocks.find(e => e.id === id) || {
-    position: { x: 0, y: 0 }
-  };
+  const { columns, blocks, gameOver, pauze } = state;
+  const block = state.blocks.find(e => e.id === id);
+  const positions = block
+    ? block.squares.map(e => e.position)
+    : [{ x: 0, y: 0 }];
 
   switch (type) {
     case generateBlock:
       return { ...state, blocks: [...state.blocks, generateBlockFunc()] };
 
     case changeBlockYPosition:
-      if (
-        columns[position.x].rows[position.y + 1]
-          ? columns[position.x].rows[position.y + 1].fieldEmpty
-          : false
-      ) {
+      if (checkIfCanGoDown(columns, positions)) {
         //moving block
         return {
           ...state,
-          blocks: changeBlockPositionFunc(blocks, id, "y", 1)
+          blocks: blocks.map(block =>
+            block.id === id ? changeBlockPositionFunc(block, "y", 1) : block
+          )
         };
-      } else if (
-        position.x === 5 &&
-        position.y === 0 &&
-        columns[position.x].rows[position.y + 1].fieldEmpty === false
-      ) {
+      } else if (block.defaultPosition) {
         //game over
         return {
           ...state,
           gameOver: true
         };
-      } else {
+      } else if (!gameOver) {
         //block generate, removing row if is full
-        const newClomuns = changeFieldStatus(columns, position);
-        const isFullRow = newClomuns.every(
-          column => !column.rows[position.y].fieldEmpty
-        );
-        const newBlocks = [...state.blocks, generateBlockFunc()];
+        const newBlocks = [
+          ...state.blocks.map(e => ({
+            ...e,
+            isActive: false
+          })),
+          generateBlockFunc()
+        ];
+
+        const newClomuns = cloneColumns(columns);
+        changeFieldsStatus(newClomuns, positions);
+
+        const fullRows = findFullRows(newClomuns, positions);
+        console.log(fullRows)
         return {
           ...state,
-          blocks: isFullRow
-            ? newBlocks
-                .filter(e => e.position.y !== position.y)
-                .map(e => {
-                  if (e.position.y < position.y) {
-                    return {
-                      ...e,
-                      position: {
-                        ...e.position,
-                        y: e.position.y + 1
-                      }
-                    };
-                  } else {
-                    return e;
-                  }
-                })
-            : newBlocks,
-          columns: isFullRow
-            ? changeFullRowFieldsStatus(newClomuns, position)
-            : newClomuns
+          pauze: false,
+          columns:
+            fullRows.length > 0
+              ? changeFullRowFieldsStatus(newClomuns, fullRows)
+              : newClomuns,
+          blocks:
+            fullRows.length > 0
+              ? filterFullRowBlocks(newBlocks, fullRows)
+              : newBlocks
         };
       }
 
     case changeBlockXPosition:
       if (
-        (columns[position.x + moveXRequest]
-          ? columns[position.x + moveXRequest].rows[position.y].fieldEmpty
-          : false) &&
-        (columns[position.x].rows[position.y + 1]
-          ? columns[position.x].rows[position.y + 1].fieldEmpty
-          : false)
+        checkIfCanTurn(columns, positions, moveXRequest) &&
+        checkIfCanGoDown(columns, positions)
       ) {
         return {
           ...state,
-          blocks: changeBlockPositionFunc(blocks, id, "x", moveXRequest)
+          pauze: false,
+          blocks: blocks.map(block =>
+            block.id === id
+              ? changeBlockPositionFunc(block, "x", moveXRequest)
+              : block
+          )
         };
       }
+    case togglePauze:
+      return {
+        ...state,
+        pauze: !pauze
+      };
     default:
       return state;
   }

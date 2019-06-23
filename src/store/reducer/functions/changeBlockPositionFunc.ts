@@ -1,15 +1,13 @@
 import blockI from '../../../interfaces/block';
 
-export default (blocks: Array<blockI>, id: number, property: 'y' | 'x', value: number) => {
-  return blocks.map(block => {
-    return block.id === id
-      ? {
-        ...block,
-        position: {
-          ...block.position,
-          [property]: block.position[property] + value
-        }
-      }
-      : block;
-  })
-};
+export default (block: blockI, property: 'y' | 'x', value: number) => ({
+  ...block,
+  defaultPosition: false,
+  squares: block.squares.map(square => ({
+    ...square,
+    position: {
+      ...square.position,
+      [property]: square.position[property] + value
+    }
+  }))
+});
