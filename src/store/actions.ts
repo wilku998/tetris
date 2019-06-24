@@ -2,7 +2,8 @@ import {
   generateBlock,
   changeBlockYPosition,
   changeBlockXPosition,
-  togglePauze
+  togglePauze,
+  rotateBlock
 } from "./actionsNames";
 
 export const generateBlockAction = () => ({
@@ -20,4 +21,8 @@ export const changeBlockYPositionAction = () => ({
 
 export const togglePauzeAction = () => ({
   type: togglePauze
+});
+
+export const rotateBlockAction = () => ({
+  type: rotateBlock
 });

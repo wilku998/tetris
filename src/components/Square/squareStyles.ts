@@ -9,8 +9,11 @@ export default styled.div.attrs(({ x, y }: { x: number; y: number }) => ({
   position: absolute;
   width: calc(100% / 10);
   height: calc(100% / 15);
-  ${({ color, animationTimeing }: {color: string, animationTimeing: number}) => `
+  ${({
+    color,
+  }: {
+    color: string;
+  }) => `
         background-color: ${color};
-        transition: all .${animationTimeing}s linear;
     `}
 `;

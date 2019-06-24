@@ -2,7 +2,8 @@ import {
   changeBlockYPosition,
   changeBlockXPosition,
   generateBlock,
-  togglePauze
+  togglePauze,
+  rotateBlock
 } from "../actionsNames";
 
 import blockI from "../../interfaces/block";
@@ -43,7 +44,12 @@ export default (state = initialState, action: actionI) => {
         return {
           ...state,
           blocks: blocks.map(block =>
-            block.id === id ? changeBlockPositionFunc(block, "y", 1) : block
+            block.id === id
+              ? {
+                  ...changeBlockPositionFunc(block, "y", 1),
+                  movedBy: { x: block.movedBy.x, y: block.movedBy.y + 1 }
+                }
+              : block
           )
         };
       } else if (block.defaultPosition) {
@@ -76,6 +82,7 @@ export default (state = initialState, action: actionI) => {
               : newBlocks
         };
       }
+      return state;
 
     case changeBlockXPosition:
       if (
@@ -92,11 +99,74 @@ export default (state = initialState, action: actionI) => {
           ...state,
           blocks: blocks.map(block =>
             block.id === id
-              ? changeBlockPositionFunc(block, "x", moveXRequest)
+              ? {
+                  ...changeBlockPositionFunc(block, "x", moveXRequest),
+                  movedBy: {
+                    x: block.movedBy.x + moveXRequest,
+                    y: block.movedBy.y
+                  }
+                }
               : block
           )
         };
       }
+      return state;
+
+    case rotateBlock:
+      const { rotatedPositionsQuantity, rotatedBy, movedBy } = block;
+
+      if (rotatedPositionsQuantity > 0) {
+        const newRotatedBy =
+          rotatedBy === rotatedPositionsQuantity - 1 ? 0 : rotatedBy + 1;
+        const rotatedBlockPositions = block.squares.map(
+          (e: blockI["squares"][0]) => e.rotatedPositions[newRotatedBy]
+        );
+        if (
+          checkIfBlockCanMove(
+            allOccupiedPositions,
+            rotatedBlockPositions,
+            maxX,
+            "x",
+            movedBy.x
+          ) &&
+          checkIfBlockCanMove(
+            allOccupiedPositions,
+            rotatedBlockPositions,
+            maxY,
+            "y",
+            movedBy.y
+          )
+        ) {
+          const rotatedBlock = {
+            ...block,
+            squares: block.squares.map(
+              (square: blockI["squares"][0], i: number) => ({
+                ...square,
+                position: rotatedBlockPositions[i]
+              })
+            ),
+            rotatedBy: newRotatedBy
+          };
+          const rotatedBlockMovedByX = changeBlockPositionFunc(
+            rotatedBlock,
+            "x",
+            movedBy.x
+          );
+          const rotatedBlockAbsolutlyMoved = changeBlockPositionFunc(
+            rotatedBlockMovedByX,
+            "y",
+            movedBy.y
+          );
+
+          return {
+            ...state,
+            blocks: blocks.map(block =>
+              block.id === id ? rotatedBlockAbsolutlyMoved : block
+            )
+          };
+        }
+      }
+      return state;
     case togglePauze:
       return {
         ...state,

@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import Block from "../Block/Block";
 import { animationTimeing } from "../../staticData/animationTimeing";
 import style from "./mainFieldStyles";
-import { togglePauzeAction } from "../../store/actions";
 import {
   changeBlockXPositionAction,
-  changeBlockYPositionAction
+  changeBlockYPositionAction,
+  togglePauzeAction,
+  rotateBlockAction
 } from "../../store/actions";
 
 const { useEffect } = React;
@@ -19,7 +20,7 @@ interface propsI {
   pauze: boolean;
   changeBlockYPosition: () => void;
   changeBlockXPosition: (moveXRequest: number) => void;
-
+  rotateBlock: () => void;
   togglePauze: () => void;
 }
 const MainField = ({
@@ -29,36 +30,38 @@ const MainField = ({
   togglePauze,
   pauze,
   changeBlockYPosition,
-  changeBlockXPosition
+  changeBlockXPosition,
+  rotateBlock
 }: propsI) => {
-  
   useEffect(() => {
+    let rotateBlocked = false;
+
     if (!gameOver && !pauze) {
       var gamePlay = setInterval(() => {
-        changeBlockYPosition(1);
+        rotateBlocked = false;
+        changeBlockYPosition();
       }, animationTimeing);
     }
-
-    let lastCall = 0;
     var keyListner = (e: any) => {
-      const moveBlocked = Date.now() - lastCall < animationTimeing;
       const keyCode = e.code;
       switch (keyCode) {
         case "ArrowLeft":
-          if (!moveBlocked) {
-            changeBlockXPosition(-1);
-            lastCall = Date.now();
-          }
+          changeBlockXPosition(-1);
+          rotateBlocked = false;
           break;
         case "ArrowRight":
-          if (!moveBlocked) {
-            changeBlockXPosition(1);
-            lastCall = Date.now();
-          }
+          changeBlockXPosition(1);
+          rotateBlocked = false;
           break;
         case "ArrowDown":
-          changeBlockYPosition(1);
-          lastCall = Date.now();
+          changeBlockYPosition();
+          rotateBlocked = false;
+          break;
+        case "ArrowUp":
+          if (!rotateBlocked) {
+            rotateBlock();
+            rotateBlocked = true;
+          }
           break;
         case "Space":
           togglePauze();
@@ -249,7 +252,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   togglePauze: () => dispatch(togglePauzeAction()),
   changeBlockXPosition: (moveXRequest: number) =>
     dispatch(changeBlockXPositionAction(moveXRequest)),
-  changeBlockYPosition: () => dispatch(changeBlockYPositionAction())
+  changeBlockYPosition: () => dispatch(changeBlockYPositionAction()),
+  rotateBlock: () => dispatch(rotateBlockAction())
 });
 
 export default connect(
