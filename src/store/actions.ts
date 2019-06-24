@@ -9,18 +9,13 @@ export const generateBlockAction = () => ({
   type: generateBlock
 });
 
-export const changeBlockXPositionAction = (
-  moveXRequest: number,
-  id: number
-) => ({
+export const changeBlockXPositionAction = (moveXRequest: number) => ({
   type: changeBlockXPosition,
-  moveXRequest,
-  id
+  moveXRequest
 });
 
-export const changeBlockYPositionAction = (id: number) => ({
-  type: changeBlockYPosition,
-  id
+export const changeBlockYPositionAction = () => ({
+  type: changeBlockYPosition
 });
 
 export const togglePauzeAction = () => ({

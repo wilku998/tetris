@@ -5,49 +5,59 @@ import Block from "../Block/Block";
 import { animationTimeing } from "../../staticData/animationTimeing";
 import style from "./mainFieldStyles";
 import { togglePauzeAction } from "../../store/actions";
+import {
+  changeBlockXPositionAction,
+  changeBlockYPositionAction
+} from "../../store/actions";
 
-const { useEffect, useState } = React;
+const { useEffect } = React;
 
 interface propsI {
   className: string;
   blocks: Array<React.FunctionComponent>;
   gameOver: boolean;
   pauze: boolean;
-  togglePauze: () => void
+  changeBlockYPosition: () => void;
+  changeBlockXPosition: (moveXRequest: number) => void;
+
+  togglePauze: () => void;
 }
-const MainField = ({ className, blocks, gameOver, togglePauze, pauze }: propsI) => {
-  const [moveYRequest, setMoveYRequest] = useState(0);
-  const [moveXRequest, setMoveXRequest] = useState(0);
-
-  const resetMoveYRequest = () => setMoveYRequest(0);
-  const resetMoveXRequest = () => setMoveXRequest(0);
-
+const MainField = ({
+  className,
+  blocks,
+  gameOver,
+  togglePauze,
+  pauze,
+  changeBlockYPosition,
+  changeBlockXPosition
+}: propsI) => {
+  
   useEffect(() => {
     if (!gameOver && !pauze) {
       var gamePlay = setInterval(() => {
-        setMoveYRequest(1);
+        changeBlockYPosition(1);
       }, animationTimeing);
     }
 
     let lastCall = 0;
-    var keyListner = e => {
+    var keyListner = (e: any) => {
       const moveBlocked = Date.now() - lastCall < animationTimeing;
       const keyCode = e.code;
       switch (keyCode) {
         case "ArrowLeft":
           if (!moveBlocked) {
-            setMoveXRequest(-1);
+            changeBlockXPosition(-1);
             lastCall = Date.now();
           }
           break;
         case "ArrowRight":
           if (!moveBlocked) {
-            setMoveXRequest(1);
+            changeBlockXPosition(1);
             lastCall = Date.now();
           }
           break;
         case "ArrowDown":
-          setMoveYRequest(1);
+          changeBlockYPosition(1);
           lastCall = Date.now();
           break;
         case "Space":
@@ -67,14 +77,7 @@ const MainField = ({ className, blocks, gameOver, togglePauze, pauze }: propsI) 
   return (
     <main className={className}>
       {blocks.map(block => (
-        <Block
-          key={block.id}
-          block={block}
-          moveYRequest={moveYRequest}
-          resetMoveYRequest={resetMoveYRequest}
-          moveXRequest={moveXRequest}
-          resetMoveXRequest={resetMoveXRequest}
-        />
+        <Block key={block.id} block={block} />
       ))}
       <div />
       <div />
@@ -243,7 +246,13 @@ const mapStateToProps = ({ blocks, gameOver, pauze }: mapStateToPropsI) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  togglePauze: () => dispatch(togglePauzeAction())
-})
+  togglePauze: () => dispatch(togglePauzeAction()),
+  changeBlockXPosition: (moveXRequest: number) =>
+    dispatch(changeBlockXPositionAction(moveXRequest)),
+  changeBlockYPosition: () => dispatch(changeBlockYPositionAction())
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(style(MainField));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(style(MainField));

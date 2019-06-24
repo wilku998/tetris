@@ -5,6 +5,7 @@ import {
   togglePauze
 } from "../actionsNames";
 
+import blockI from "../../interfaces/block";
 import initialState from "./initialState";
 import generateBlockFunc from "./functions/generateBlockFunc";
 import changeBlockPositionFunc from "./functions/changeBlockPositionFunc";
@@ -18,20 +19,16 @@ const maxX = 9;
 
 interface actionI {
   type: string;
-  position?: {
-    x: number;
-    y: number;
-  };
-  id?: string;
-  moveXRequest: number;
+  moveXRequest?: number;
 }
 
 export default (state = initialState, action: actionI) => {
-  const { type, id, moveXRequest } = action;
+  const { type, moveXRequest } = action;
   const { blocks, gameOver, pauze } = state;
-  const block = state.blocks.find(e => e.id === id);
+  const block = state.blocks.find(e => e.isActive);
+  const { id } = block ? block : { id: undefined };
   const positions = block
-    ? block.squares.map(e => e.position)
+    ? block.squares.map((e: blockI["squares"][0]) => e.position)
     : [{ x: 0, y: 0 }];
 
   const allOccupiedPositions = getAllOccupiedPositions(blocks, id);
