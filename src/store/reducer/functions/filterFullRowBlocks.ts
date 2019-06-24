@@ -1,20 +1,27 @@
 import blockI from "../../../interfaces/block";
 
-export default (blocks: Array<blockI>, fullRowsY: Array<number>) =>
-  blocks
+export default (blocks: Array<blockI>, fullRowsY: Array<number>) => {
+  console.log("filtering");
+  return blocks
     .map(block => ({
       ...block,
-      squares: block.squares.filter(e => !fullRowsY.some(y => y === e.position.y)).map(e => {
-        if(fullRowsY.some(y => y > e.position.y)){
-          return {
-            ...e,
-            position: {
-              ...e.position,
-              y: e.position.y + 1
-            }
+      squares: block.squares
+        .filter(e => !fullRowsY.some(y => y === e.position.y))
+        .map(e => {
+          const value = fullRowsY.filter(y => e.position.y < y).length;
+
+          if (value > 0) {
+            return {
+              ...e,
+              position: {
+                ...e.position,
+                y: e.position.y + value
+              }
+            };
+          } else {
+            return e;
           }
-        }else{
-          return e
-        }
-      })
-    })).filter(block => block.squares.length > 0)
+        })
+    }))
+    .filter(block => block.squares.length > 0);
+};

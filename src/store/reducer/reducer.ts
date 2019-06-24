@@ -7,14 +7,14 @@ import {
 
 import initialState from "./initialState";
 import generateBlockFunc from "./functions/generateBlockFunc";
-import changeFullRowFieldsStatus from "./functions/changeFullRowFieldsStatus";
-import changeFieldsStatus from "./functions/changeFieldsStatus";
 import changeBlockPositionFunc from "./functions/changeBlockPositionFunc";
-import findFullRows from "./functions/findFullRows";
-import checkIfCanGoDown from "./functions/checkIfCanGoDown";
-import checkIfCanTurn from "./functions/checkIfCanTurn";
+import checkIfBlockCanMove from "./functions/checkIfBlockCanMove";
+import getAllOccupiedPositions from "./functions/getAllOccupiedPositions";
+import getFullRowsY from "./functions/getFullRowsY";
 import filterFullRowBlocks from "./functions/filterFullRowBlocks";
-import cloneColumns from "./functions/cloneColumns";
+
+const maxY = 14;
+const maxX = 9;
 
 interface actionI {
   type: string;
@@ -22,24 +22,26 @@ interface actionI {
     x: number;
     y: number;
   };
-  id?: number;
+  id?: string;
   moveXRequest: number;
 }
 
 export default (state = initialState, action: actionI) => {
   const { type, id, moveXRequest } = action;
-  const { columns, blocks, gameOver, pauze } = state;
+  const { blocks, gameOver, pauze } = state;
   const block = state.blocks.find(e => e.id === id);
   const positions = block
     ? block.squares.map(e => e.position)
     : [{ x: 0, y: 0 }];
+
+  const allOccupiedPositions = getAllOccupiedPositions(blocks, id);
 
   switch (type) {
     case generateBlock:
       return { ...state, blocks: [...state.blocks, generateBlockFunc()] };
 
     case changeBlockYPosition:
-      if (checkIfCanGoDown(columns, positions)) {
+      if (checkIfBlockCanMove(allOccupiedPositions, positions, maxY, "y", 1)) {
         //moving block
         return {
           ...state,
@@ -55,6 +57,12 @@ export default (state = initialState, action: actionI) => {
         };
       } else if (!gameOver) {
         //block generate, removing row if is full
+        const fullRowsY = getFullRowsY(
+          getAllOccupiedPositions(blocks, "allPositions"),
+          positions,
+          maxX + 1
+        );
+
         const newBlocks = [
           ...state.blocks.map(e => ({
             ...e,
@@ -63,33 +71,28 @@ export default (state = initialState, action: actionI) => {
           generateBlockFunc()
         ];
 
-        const newClomuns = cloneColumns(columns);
-        changeFieldsStatus(newClomuns, positions);
-
-        const fullRows = findFullRows(newClomuns, positions);
-        console.log(fullRows)
         return {
           ...state,
-          pauze: false,
-          columns:
-            fullRows.length > 0
-              ? changeFullRowFieldsStatus(newClomuns, fullRows)
-              : newClomuns,
           blocks:
-            fullRows.length > 0
-              ? filterFullRowBlocks(newBlocks, fullRows)
+            fullRowsY.length > 0
+              ? filterFullRowBlocks(newBlocks, fullRowsY)
               : newBlocks
         };
       }
 
     case changeBlockXPosition:
       if (
-        checkIfCanTurn(columns, positions, moveXRequest) &&
-        checkIfCanGoDown(columns, positions)
+        checkIfBlockCanMove(
+          allOccupiedPositions,
+          positions,
+          maxX,
+          "x",
+          moveXRequest
+        ) &&
+        checkIfBlockCanMove(allOccupiedPositions, positions, maxY, "y", 1)
       ) {
         return {
           ...state,
-          pauze: false,
           blocks: blocks.map(block =>
             block.id === id
               ? changeBlockPositionFunc(block, "x", moveXRequest)
