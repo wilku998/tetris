@@ -21,7 +21,7 @@ export default createGlobalStyle`
     }
 
     body {
-        font-family: 'Open Sans', sans-serif;
+        font-family: 'Press Start 2P';
         font-size: 1.6rem;
         line-height: 1.6;
         position: relative;
