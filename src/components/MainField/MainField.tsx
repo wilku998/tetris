@@ -7,7 +7,7 @@ import style from "./mainFieldStyles";
 import {
   changeBlockXPositionAction,
   changeBlockYPositionAction,
-  togglePauzeAction,
+  togglePauseAction,
   rotateBlockAction
 } from "../../store/actions";
 
@@ -17,18 +17,18 @@ interface propsI {
   className: string;
   blocks: Array<React.FunctionComponent>;
   gameOver: boolean;
-  pauze: boolean;
+  pause: boolean;
   changeBlockYPosition: () => void;
   changeBlockXPosition: (moveXRequest: number) => void;
   rotateBlock: () => void;
-  togglePauze: () => void;
+  togglePause: () => void;
 }
 const MainField = ({
   className,
   blocks,
   gameOver,
-  togglePauze,
-  pauze,
+  togglePause,
+  pause,
   changeBlockYPosition,
   changeBlockXPosition,
   rotateBlock
@@ -36,7 +36,7 @@ const MainField = ({
   useEffect(() => {
     let rotateBlocked = false;
 
-    if (!gameOver && !pauze) {
+    if (!gameOver && !pause) {
       var gamePlay = setInterval(() => {
         rotateBlocked = false;
         changeBlockYPosition();
@@ -64,7 +64,7 @@ const MainField = ({
           }
           break;
         case "Space":
-          togglePauze();
+          togglePause();
           break;
         default:
       }
@@ -75,7 +75,7 @@ const MainField = ({
       clearInterval(gamePlay);
       document.removeEventListener("keydown", keyListner);
     };
-  }, [gameOver, pauze]);
+  }, [gameOver, pause]);
 
   return (
     <main className={className}>
@@ -239,17 +239,17 @@ const MainField = ({
 interface mapStateToPropsI {
   blocks: Array<React.FunctionComponent>;
   gameOver: boolean;
-  pauze: boolean;
+  pause: boolean;
 }
 
-const mapStateToProps = ({ blocks, gameOver, pauze }: mapStateToPropsI) => ({
+const mapStateToProps = ({ blocks, gameOver, pause }: mapStateToPropsI) => ({
   blocks,
   gameOver,
-  pauze
+  pause
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  togglePauze: () => dispatch(togglePauzeAction()),
+  togglePause: () => dispatch(togglePauseAction()),
   changeBlockXPosition: (moveXRequest: number) =>
     dispatch(changeBlockXPositionAction(moveXRequest)),
   changeBlockYPosition: () => dispatch(changeBlockYPositionAction()),

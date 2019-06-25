@@ -2,7 +2,7 @@ import {
   changeBlockYPosition,
   changeBlockXPosition,
   generateBlock,
-  togglePauze,
+  togglePause,
   rotateBlock
 } from "../actionsNames";
 
@@ -26,7 +26,7 @@ interface actionI {
 
 export default (state = initialState, action: actionI) => {
   const { type, moveXRequest } = action;
-  const { blocks, gameOver, pauze } = state;
+  const { blocks, gameOver, pause } = state;
   const block = state.blocks.find(e => e.isActive);
   const { id } = block ? block : { id: undefined };
   const positions = block
@@ -160,10 +160,10 @@ export default (state = initialState, action: actionI) => {
       }
       return state;
 
-    case togglePauze:
+    case togglePause:
       return {
         ...state,
-        pauze: !pauze
+        pause: !pause
       };
 
     default:

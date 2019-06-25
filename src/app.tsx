@@ -8,6 +8,7 @@ import configureStore from './store/configureStore';
 import theme from "./styledComponents/theme";
 import GlobalStyles from "./styledComponents/GlobalStyles";
 import MainField from "./components/MainField/MainField";
+import ControlPanel from "./components/ControlPanel/ControlPanel";
 
 const store = configureStore();
 
@@ -17,6 +18,7 @@ const app = (
       <div>
         <GlobalStyles />
         <MainField />
+        <ControlPanel />
       </div>
     </ThemeProvider>
   </Provider>
