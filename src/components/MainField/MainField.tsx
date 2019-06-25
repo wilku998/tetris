@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
+import blockI from '../../interfaces/block'
 import Block from "../Block/Block";
 import { animationTimeing } from "../../staticData/animationTimeing";
 import style from "./mainFieldStyles";
@@ -13,9 +14,9 @@ import {
 
 const { useEffect } = React;
 
-interface propsI {
+export interface propsI {
   className: string;
-  blocks: Array<React.FunctionComponent>;
+  blocks: Array<blockI>;
   gameOver: boolean;
   pause: boolean;
   changeBlockYPosition: () => void;

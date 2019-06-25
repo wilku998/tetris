@@ -18,10 +18,8 @@ const Square = ({ color, className, square, transition }: propsI) => {
   const { x, y } = square.position;
   return (
     <StyledSquare
-      style={{ backgroundColor: color }}
       x={x}
       y={y}
-      transition={transition}
       color={color}
       className={className}
     />

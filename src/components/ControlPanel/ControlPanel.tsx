@@ -6,14 +6,15 @@ import {
   changeBlockYPositionAction,
   rotateBlockAction
 } from "../../store/actions";
-import { Button, Icon, IconLeft, IconRight } from "./controlPanelStyles";
+import style, { Button, Icon, IconLeft, IconRight } from "./controlPanelStyles";
 
-interface propsI {
+export interface propsI {
   pause: boolean;
   togglePause: () => void;
   changeBlockXPosition: (value: number) => void;
   changeBlockYPosition: () => void;
   rotateBlock: () => void;
+  className: string
 }
 
 const ControlPanel = ({
@@ -21,12 +22,13 @@ const ControlPanel = ({
   changeBlockXPosition,
   changeBlockYPosition,
   rotateBlock,
-  pause
+  pause,
+  className
 }: propsI) => {
   const goLeft = () => changeBlockXPosition(-1);
   const goRight = () => changeBlockXPosition(1);
   return (
-    <nav>
+    <nav className={className}>
       <Button>
         <IconLeft onClick={goLeft} src="./svg/arrow-down.svg" />
       </Button>
@@ -59,4 +61,4 @@ const mapStateToProps = ({ pause }: { pause: boolean }) => ({ pause });
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ControlPanel);
+)(style(ControlPanel));
