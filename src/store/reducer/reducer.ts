@@ -67,6 +67,7 @@ export default (state = initialState, action: actionI) => {
           maxX + 1
         );
 
+        console.log(fullRowsY)
         const newBlocks = [
           ...state.blocks.map(e => ({
             ...e,
@@ -129,7 +130,6 @@ export default (state = initialState, action: actionI) => {
           }
         );
 
-        console.log({ allOccupiedPositions, rotatedBlockPositions });
         if (
           !rotatedBlockPositions.some(
             ({ x, y }: positionI) =>
@@ -159,11 +159,13 @@ export default (state = initialState, action: actionI) => {
         }
       }
       return state;
+
     case togglePauze:
       return {
         ...state,
         pauze: !pauze
       };
+
     default:
       return state;
   }
