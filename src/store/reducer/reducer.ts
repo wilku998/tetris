@@ -15,6 +15,7 @@ import checkIfBlockCanMove from "./functions/checkIfBlockCanMove";
 import getAllOccupiedPositions from "./functions/getAllOccupiedPositions";
 import getFullRowsY from "./functions/getFullRowsY";
 import filterFullRowBlocks from "./functions/filterFullRowBlocks";
+import getLevelAndFallTimeing from "./functions/getLevelAndFallTimeing";
 
 const maxY = 14;
 const maxX = 9;
@@ -26,7 +27,7 @@ interface actionI {
 
 export default (state = initialState, action: actionI) => {
   const { type, moveXRequest } = action;
-  const { blocks, gameOver, pause } = state;
+  const { blocks, gameOver, pause, source, level } = state;
   const block = state.blocks.find(e => e.isActive);
   const { id } = block ? block : { id: undefined };
   const positions = block
@@ -67,21 +68,33 @@ export default (state = initialState, action: actionI) => {
           maxX + 1
         );
 
-        console.log(fullRowsY)
+        const newBlock = generateBlockFunc();
+
         const newBlocks = [
           ...state.blocks.map(e => ({
             ...e,
             isActive: false
           })),
-          generateBlockFunc()
+          newBlock
         ];
+
+        const newBlockSource = newBlock.squares.length;
+
+        const sourceToAdd =
+          newBlock.squares.length + (fullRowsY.length > 0 ? 100 : 0) * level;
+        const newSource = source + sourceToAdd;
+
+        const [newLevel, newFallTimeing] = getLevelAndFallTimeing(newSource);
 
         return {
           ...state,
           blocks:
             fullRowsY.length > 0
               ? filterFullRowBlocks(newBlocks, fullRowsY)
-              : newBlocks
+              : newBlocks,
+          source: newSource,
+          level: newLevel,
+          fallTimeing: newFallTimeing
         };
       }
       return state;

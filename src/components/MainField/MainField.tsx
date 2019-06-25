@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 import blockI from '../../interfaces/block'
 import Block from "../Block/Block";
-import { animationTimeing } from "../../staticData/animationTimeing";
 import style from "./mainFieldStyles";
 import {
   changeBlockXPositionAction,
@@ -19,6 +18,7 @@ export interface propsI {
   blocks: Array<blockI>;
   gameOver: boolean;
   pause: boolean;
+  fallTimeing: number
   changeBlockYPosition: () => void;
   changeBlockXPosition: (moveXRequest: number) => void;
   rotateBlock: () => void;
@@ -32,7 +32,8 @@ const MainField = ({
   pause,
   changeBlockYPosition,
   changeBlockXPosition,
-  rotateBlock
+  rotateBlock,
+  fallTimeing
 }: propsI) => {
   useEffect(() => {
     let rotateBlocked = false;
@@ -41,7 +42,7 @@ const MainField = ({
       var gamePlay = setInterval(() => {
         rotateBlocked = false;
         changeBlockYPosition();
-      }, animationTimeing);
+      }, fallTimeing);
     }
     var keyListner = (e: any) => {
       const keyCode = e.code;
@@ -76,7 +77,7 @@ const MainField = ({
       clearInterval(gamePlay);
       document.removeEventListener("keydown", keyListner);
     };
-  }, [gameOver, pause]);
+  }, [gameOver, pause, fallTimeing]);
 
   return (
     <main className={className}>
@@ -241,12 +242,14 @@ interface mapStateToPropsI {
   blocks: Array<React.FunctionComponent>;
   gameOver: boolean;
   pause: boolean;
+  fallTimeing: number
 }
 
-const mapStateToProps = ({ blocks, gameOver, pause }: mapStateToPropsI) => ({
+const mapStateToProps = ({ blocks, gameOver, pause, fallTimeing }: mapStateToPropsI) => ({
   blocks,
   gameOver,
-  pause
+  pause,
+  fallTimeing
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
