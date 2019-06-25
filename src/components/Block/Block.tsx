@@ -13,7 +13,7 @@ const Block = ({
   const { isActive, color, squares } = block;
   
   return (
-    <div>
+    <div style={{border: 'none'}}>
       {squares.map(square => (
         <Square key={square.id} square={square} color={isActive ? "green" : color} />
       ))}

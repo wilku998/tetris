@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export default (MainField) => styled(MainField)`
     height: 600px;
-    width: 400px;
     border-top: 1px solid black;
     border-left: 1px solid black;
     display: grid;
