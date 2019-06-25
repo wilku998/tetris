@@ -1,15 +1,16 @@
 import allBlocks from "../../../staticData/blocks/allBlocks";
-const colors = ["red", "blue", "yellow", "pink", "purple", "brown"];
+import theme from '../../../styledComponents/theme';
+
+const colors = [theme.colorBlue, theme.colorGreen, theme.colorPink];
 
 export default () => {
-  const random = Math.floor(Math.random() * allBlocks.length);
   const id = Date.now().toString();
-  const squares = allBlocks[random].map((e, i) => ({ ...e, id: `${id}${i}` }));
+  const squares = allBlocks[Math.floor(Math.random() * allBlocks.length)].map((e, i) => ({ ...e, id: `${id}${i}` }));
 
   return {
     squares,
     id,
-    color: colors[random],
+    color: colors[Math.floor(Math.random() * colors.length)],
     isActive: true,
     defaultPosition: true,
     transition: "gentle",

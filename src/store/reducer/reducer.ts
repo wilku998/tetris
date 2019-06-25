@@ -148,8 +148,8 @@ export default (state = initialState, action: actionI) => {
             ({ x, y }: positionI) =>
               allOccupiedPositions.findIndex(e => e.x === x && e.y === y) >
                 -1 ||
-              x > maxX ||
-              y > maxY
+              x > maxX || x < 0 ||
+              y > maxY ||  y < 0
           )
         ) {
           const rotatedBlock = {

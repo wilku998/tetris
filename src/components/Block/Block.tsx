@@ -13,9 +13,9 @@ const Block = ({
   const { isActive, color, squares } = block;
   
   return (
-    <div style={{border: 'none'}}>
+    <div style={{border: 'none', width: 0, height: 0}}>
       {squares.map(square => (
-        <Square key={square.id} square={square} color={isActive ? "green" : color} />
+        <Square key={square.id} square={square} color={color} />
       ))}
     </div>
   );

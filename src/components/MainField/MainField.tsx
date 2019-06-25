@@ -48,19 +48,25 @@ const MainField = ({
       const keyCode = e.code;
       switch (keyCode) {
         case "ArrowLeft":
-          changeBlockXPosition(-1);
-          rotateBlocked = false;
+          if(!pause){
+            changeBlockXPosition(-1);
+            rotateBlocked = false;
+          }
           break;
         case "ArrowRight":
-          changeBlockXPosition(1);
-          rotateBlocked = false;
+          if(!pause){
+            changeBlockXPosition(1);
+            rotateBlocked = false;
+          }
           break;
         case "ArrowDown":
-          changeBlockYPosition();
-          rotateBlocked = false;
+          if(!pause){
+            changeBlockYPosition();
+            rotateBlocked = false;
+          }
           break;
         case "ArrowUp":
-          if (!rotateBlocked) {
+        if (!rotateBlocked && !pause) {
             rotateBlock();
             rotateBlocked = true;
           }

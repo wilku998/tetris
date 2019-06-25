@@ -1,8 +1,9 @@
 import { createGlobalStyle } from "styled-components";
+import media from './media';
 
 export default createGlobalStyle`
     * {
-        box-sizing: border-box;
+        /* box-sizing: border-box; */
         margin: 0;
         padding: 0;
     }
@@ -16,19 +17,40 @@ export default createGlobalStyle`
     }
 
     html {
-        font-size: 62.5%;
+        font-size: 55%;
         scroll-behavior: smooth;
+        ${media.medium`
+            font-size: 50%;
+        `}
+        ${media.small`
+            font-size: 40%;
+        `}
     }
+
 
     body {
         font-family: 'Press Start 2P';
         font-size: 1.6rem;
         line-height: 1.6;
         position: relative;
+        background: url('./background.jpg') center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+
+        ${({ theme }) => `
+            color: ${theme.colorPurple};
+        `}
+    }
+
+    svg path {
+        ${({ theme }) => `
+            fill: ${theme.colorPurple} !important;
+        `}
     }
 
     #app{
-        overflow-x: hidden;
     }
 
     img {
