@@ -7,6 +7,7 @@ import {
 } from "../actionsNames";
 
 import blockI from "../../interfaces/block";
+import positionI from "../../interfaces/position";
 import initialState from "./initialState";
 import generateBlockFunc from "./functions/generateBlockFunc";
 import changeBlockPositionFunc from "./functions/changeBlockPositionFunc";
@@ -113,28 +114,29 @@ export default (state = initialState, action: actionI) => {
       return state;
 
     case rotateBlock:
-      const { rotatedPositionsQuantity, rotatedBy, movedBy } = block;
+      const { rotatedPositionsQuantity, rotatedBy } = block;
 
       if (rotatedPositionsQuantity > 0) {
         const newRotatedBy =
           rotatedBy === rotatedPositionsQuantity - 1 ? 0 : rotatedBy + 1;
         const rotatedBlockPositions = block.squares.map(
-          (e: blockI["squares"][0]) => e.rotatedPositions[newRotatedBy]
+          (e: blockI["squares"][0]) => {
+            const { x, y } = e.rotatedPositions[newRotatedBy];
+            return {
+              x: e.position.x + x,
+              y: e.position.y + y
+            };
+          }
         );
+
+        console.log({ allOccupiedPositions, rotatedBlockPositions });
         if (
-          checkIfBlockCanMove(
-            allOccupiedPositions,
-            rotatedBlockPositions,
-            maxX,
-            "x",
-            movedBy.x
-          ) &&
-          checkIfBlockCanMove(
-            allOccupiedPositions,
-            rotatedBlockPositions,
-            maxY,
-            "y",
-            movedBy.y
+          !rotatedBlockPositions.some(
+            ({ x, y }: positionI) =>
+              allOccupiedPositions.findIndex(e => e.x === x && e.y === y) >
+                -1 ||
+              x > maxX ||
+              y > maxY
           )
         ) {
           const rotatedBlock = {
@@ -147,21 +149,11 @@ export default (state = initialState, action: actionI) => {
             ),
             rotatedBy: newRotatedBy
           };
-          const rotatedBlockMovedByX = changeBlockPositionFunc(
-            rotatedBlock,
-            "x",
-            movedBy.x
-          );
-          const rotatedBlockAbsolutlyMoved = changeBlockPositionFunc(
-            rotatedBlockMovedByX,
-            "y",
-            movedBy.y
-          );
 
           return {
             ...state,
             blocks: blocks.map(block =>
-              block.id === id ? rotatedBlockAbsolutlyMoved : block
+              block.id === id ? rotatedBlock : block
             )
           };
         }
