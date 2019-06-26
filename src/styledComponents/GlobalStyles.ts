@@ -3,7 +3,7 @@ import media from './media';
 
 export default createGlobalStyle`
     * {
-        /* box-sizing: border-box; */
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
@@ -38,7 +38,7 @@ export default createGlobalStyle`
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-
+        text-transform: uppercase;
         ${({ theme }) => `
             color: ${theme.colorPurple};
         `}
@@ -60,13 +60,17 @@ export default createGlobalStyle`
     }
 
     button {
+        text-transform: uppercase;
         cursor: pointer;
+        border: none;
+        background-color: transparent;
+        color: inherit;
+        font-family: inherit;
         &:focus{
             outline: none;
         }
         &:disabled{
             cursor: default;
-
         }
     }
 

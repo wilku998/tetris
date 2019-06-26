@@ -3,7 +3,6 @@ import { render } from "react-dom";
 import { ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
 
-import { generateBlockAction } from "./store/actions";
 import configureStore from "./store/configureStore";
 import theme from "./styledComponents/theme";
 import App from "./components/App/App";
@@ -19,5 +18,3 @@ const app = (
 );
 
 render(app, document.getElementById("app"));
-
-store.dispatch(generateBlockAction());

@@ -6,7 +6,7 @@ import {
   changeBlockYPositionAction,
   rotateBlockAction
 } from "../../store/actions";
-import style, { Button, Icon, IconLeft, IconRight } from "./controlPanelStyles";
+import style, { Icon, IconLeft, IconRight } from "./controlPanelStyles";
 
 export interface propsI {
   pause: boolean;
@@ -29,21 +29,21 @@ const ControlPanel = ({
   const goRight = () => changeBlockXPosition(1);
   return (
     <nav className={className}>
-      <Button>
+      <button>
         <IconLeft onClick={goLeft} src="./svg/arrow-down.svg" />
-      </Button>
-      <Button onClick={goRight}>
+      </button>
+      <button onClick={goRight}>
         <IconRight src="./svg/arrow-down.svg" />
-      </Button>
-      <Button onClick={changeBlockYPosition}>
+      </button>
+      <button onClick={changeBlockYPosition}>
         <Icon src="./svg/arrow-down.svg" />
-      </Button>
-      <Button onClick={rotateBlock}>
+      </button>
+      <button onClick={rotateBlock}>
         <Icon src="./svg/rotate.svg" />
-      </Button>
-      <Button onClick={togglePause}>
+      </button>
+      <button onClick={togglePause}>
         <Icon src={`./svg/${pause ? "play" : "pause"}.svg`} />
-      </Button>
+      </button>
     </nav>
   );
 };

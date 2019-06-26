@@ -1,21 +1,22 @@
 import {
   changeBlockYPosition,
   changeBlockXPosition,
-  generateBlock,
   togglePause,
-  rotateBlock
+  rotateBlock,
+  toggleMenuScreen,
+  restartGame
 } from "../actionsNames";
 
 import blockI from "../../interfaces/block";
 import positionI from "../../interfaces/position";
 import initialState from "./initialState";
-import generateBlockFunc from "./functions/generateBlockFunc";
 import changeBlockPositionFunc from "./functions/changeBlockPositionFunc";
 import checkIfBlockCanMove from "./functions/checkIfBlockCanMove";
 import getAllOccupiedPositions from "./functions/getAllOccupiedPositions";
 import getFullRowsY from "./functions/getFullRowsY";
 import filterFullRowBlocks from "./functions/filterFullRowBlocks";
 import getLevelAndFallTimeing from "./functions/getLevelAndFallTimeing";
+import generateBlockFunc from "./functions/generateBlockFunc";
 
 const maxY = 14;
 const maxX = 9;
@@ -27,7 +28,15 @@ interface actionI {
 
 export default (state = initialState, action: actionI) => {
   const { type, moveXRequest } = action;
-  const { blocks, gameOver, pause, source, level } = state;
+  const {
+    blocks,
+    gameOver,
+    pause,
+    source,
+    level,
+    menuScreenVisible,
+    record
+  } = state;
   const block = state.blocks.find(e => e.isActive);
   const { id } = block ? block : { id: undefined };
   const positions = block
@@ -37,9 +46,6 @@ export default (state = initialState, action: actionI) => {
   const allOccupiedPositions = getAllOccupiedPositions(blocks, id);
 
   switch (type) {
-    case generateBlock:
-      return { ...state, blocks: [...state.blocks, generateBlockFunc()] };
-
     case changeBlockYPosition:
       if (checkIfBlockCanMove(allOccupiedPositions, positions, maxY, "y", 1)) {
         //moving block
@@ -58,7 +64,9 @@ export default (state = initialState, action: actionI) => {
         //game over
         return {
           ...state,
-          gameOver: true
+          gameOver: true,
+          menuScreenVisible: true,
+          record: source > record ? source : record
         };
       } else if (!gameOver) {
         //block generate, removing row if is full
@@ -148,8 +156,10 @@ export default (state = initialState, action: actionI) => {
             ({ x, y }: positionI) =>
               allOccupiedPositions.findIndex(e => e.x === x && e.y === y) >
                 -1 ||
-              x > maxX || x < 0 ||
-              y > maxY ||  y < 0
+              x > maxX ||
+              x < 0 ||
+              y > maxY ||
+              y < 0
           )
         ) {
           const rotatedBlock = {
@@ -179,6 +189,18 @@ export default (state = initialState, action: actionI) => {
         pause: !pause
       };
 
+    case toggleMenuScreen:
+      return {
+        ...state,
+        menuScreenVisible: !menuScreenVisible,
+        pause: !menuScreenVisible
+      };
+    case restartGame:
+      return {
+        ...initialState,
+        record,
+        menuScreenVisible: false
+      };
     default:
       return state;
   }

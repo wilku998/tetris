@@ -11,15 +11,9 @@ export default (ControlPanel: FunctionComponent<propsI>) => styled(
   padding: 1rem;
   grid-template-columns: repeat(5, 1fr);
   ${({ theme }) => `
-    background-color: ${theme.colorGreyLight2};
     border-top: ${theme.purpleBorder};
     border-right: ${theme.purpleBorder};
   `}
-`;
-
-export const Button = styled.button`
-  border: none;
-  background-color: transparent;
 `;
 
 export const Icon = styled(ReactSVG)`

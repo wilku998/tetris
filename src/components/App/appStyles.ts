@@ -5,6 +5,7 @@ export default (App: FunctionComponent<{className: string}>) => styled(App)`
   width: 40rem;
   display: flex;
   flex-direction: column;
+  position: relative;
   
   ${({theme}) => `
     border-bottom: ${theme.purpleBorder};

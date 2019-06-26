@@ -1,14 +1,11 @@
 import {
-  generateBlock,
   changeBlockYPosition,
   changeBlockXPosition,
   togglePause,
-  rotateBlock
+  rotateBlock,
+  toggleMenuScreen,
+  restartGame
 } from "./actionsNames";
-
-export const generateBlockAction = () => ({
-  type: generateBlock
-});
 
 export const changeBlockXPositionAction = (moveXRequest: number) => ({
   type: changeBlockXPosition,
@@ -23,6 +20,14 @@ export const togglePauseAction = () => ({
   type: togglePause
 });
 
+export const toggleMenuScreenAction = () => ({
+  type: toggleMenuScreen
+});
+
 export const rotateBlockAction = () => ({
   type: rotateBlock
+});
+
+export const restartGameAction = () => ({
+  type: restartGame
 });

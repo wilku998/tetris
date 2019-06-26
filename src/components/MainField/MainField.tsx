@@ -18,7 +18,7 @@ export interface propsI {
   blocks: Array<blockI>;
   gameOver: boolean;
   pause: boolean;
-  fallTimeing: number
+  fallTimeing: number;
   changeBlockYPosition: () => void;
   changeBlockXPosition: (moveXRequest: number) => void;
   rotateBlock: () => void;
@@ -33,12 +33,12 @@ const MainField = ({
   changeBlockYPosition,
   changeBlockXPosition,
   rotateBlock,
-  fallTimeing
+  fallTimeing,
 }: propsI) => {
   useEffect(() => {
     let rotateBlocked = false;
-
-    if (!gameOver && !pause) {
+    const isPlaying = !gameOver && !pause
+    if (isPlaying) {
       var gamePlay = setInterval(() => {
         rotateBlocked = false;
         changeBlockYPosition();
@@ -48,25 +48,25 @@ const MainField = ({
       const keyCode = e.code;
       switch (keyCode) {
         case "ArrowLeft":
-          if(!pause){
+          if(isPlaying){
             changeBlockXPosition(-1);
             rotateBlocked = false;
           }
           break;
         case "ArrowRight":
-          if(!pause){
+          if(isPlaying){
             changeBlockXPosition(1);
             rotateBlocked = false;
           }
           break;
         case "ArrowDown":
-          if(!pause){
+          if(isPlaying){
             changeBlockYPosition();
             rotateBlocked = false;
           }
           break;
         case "ArrowUp":
-        if (!rotateBlocked && !pause) {
+        if (!rotateBlocked && isPlaying) {
             rotateBlock();
             rotateBlocked = true;
           }
@@ -255,7 +255,7 @@ const mapStateToProps = ({ blocks, gameOver, pause, fallTimeing }: mapStateToPro
   blocks,
   gameOver,
   pause,
-  fallTimeing
+  fallTimeing,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
