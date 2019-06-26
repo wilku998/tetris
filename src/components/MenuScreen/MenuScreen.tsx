@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import style, { Title } from "./menuScreenStyles";
+import style, { Title, Navigation, Footer } from "./menuScreenStyles";
 import { toggleMenuScreenAction, restartGameAction } from "../../store/actions";
 
 export interface propsI {
@@ -19,16 +19,21 @@ const MenuScreen = ({
   record
 }: propsI) => {
   return (
-    <nav className={className}>
-      {gameOver && <Title>game over</Title>}
-      <Title margin="big">Your record:{record}</Title>
-      {!gameOver ? (
-        <button onClick={toggleMenuScreen}>Play</button>
-      ) : (
-        <button onClick={restartGame}>Restart game</button>
-      )}
-      <button>Turn off music</button>
-    </nav>
+    <div className={className}>
+      <Navigation>
+        {gameOver && <Title>game over</Title>}
+        <Title margin="big">Your record:{record}</Title>
+        {!gameOver ? (
+          <button onClick={toggleMenuScreen}>Play</button>
+        ) : (
+          <button onClick={restartGame}>Restart game</button>
+        )}
+      </Navigation>
+      <Footer>
+          <span>Build by Bartosz Wilk</span>
+          <span>wilkbartosz98@wp.pl</span>
+      </Footer>
+    </div>
   );
 };
 

@@ -21,4 +21,4 @@ const Block = ({
   );
 };
 
-export default Block
+export default React.memo(Block)

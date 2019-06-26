@@ -9,7 +9,7 @@ import {
 
 import blockI from "../../interfaces/block";
 import positionI from "../../interfaces/position";
-import initialState from "./initialState";
+import createInitialState from "./initialState";
 import changeBlockPositionFunc from "./functions/changeBlockPositionFunc";
 import checkIfBlockCanMove from "./functions/checkIfBlockCanMove";
 import getAllOccupiedPositions from "./functions/getAllOccupiedPositions";
@@ -26,7 +26,7 @@ interface actionI {
   moveXRequest?: number;
 }
 
-export default (state = initialState, action: actionI) => {
+export default (state = createInitialState(), action: actionI) => {
   const { type, moveXRequest } = action;
   const {
     blocks,
@@ -199,7 +199,7 @@ export default (state = initialState, action: actionI) => {
       };
     case restartGame:
       return {
-        ...initialState,
+        ...createInitialState(),
         record,
         menuScreenVisible: false,
         pause: false

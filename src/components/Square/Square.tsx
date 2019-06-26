@@ -11,10 +11,9 @@ interface propsI {
     };
   };
   className: string;
-  transition: "gentle" | "immedietly";
 }
 
-const Square = ({ color, className, square, transition }: propsI) => {
+const Square = ({ color, className, square }: propsI) => {
   const { x, y } = square.position;
   return (
     <StyledSquare
@@ -26,4 +25,4 @@ const Square = ({ color, className, square, transition }: propsI) => {
   );
 };
 
-export default Square;
+export default React.memo(Square);

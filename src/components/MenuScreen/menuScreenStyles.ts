@@ -13,22 +13,37 @@ export default (Header: FunctionComponent<propsI>) => styled(Header)`
   background-color: black;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   padding: 2rem;
   ${({ theme }) => `
         border-top: ${theme.purpleBorder};
         border-right: ${theme.purpleBorder};
     `}
+`;
 
-  & > * {
-    margin-bottom: 2rem;
+export const Title = styled.h1<{ margin?: string }>`
+  font-size: 1.8rem;
+  ${({ margin }) => `
+    margin-bottom: ${margin === "big" ? "4rem" : "1rem"} !important;
+  `}
+`;
+
+export const Footer = styled.footer`
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > span {
+    &:not(:first-child){
+      margin-top: 1rem;
+    }
   }
 `;
 
-export const Title = styled.h1<{margin?: string}>`
-  font-size: 1.8rem;
-  ${({margin}) => `
-    margin-bottom: ${margin==='big' ? '4rem' : '1rem'} !important;
-  `}
+export const Navigation = styled.nav`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto 0;
 `;

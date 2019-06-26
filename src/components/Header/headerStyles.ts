@@ -16,7 +16,7 @@ export default (Header: FunctionComponent<propsI>) => styled(Header)`
 
 export const Item = styled.span`
   line-height: 1;
-  margin-top: .2rem;
+  margin-top: 0.2rem;
   &:not(:last-of-type) {
     margin-right: 2rem;
   }
@@ -25,14 +25,7 @@ export const Item = styled.span`
 export const IconButton = styled.button`
   display: inline-block;
   box-sizing: content-box;
-
-  &:first-of-type {
-    margin-left: auto;
-  }
-
-  &:not(:first-of-type) {
-    margin-left: 1.8rem;
-  }
+  margin-left: auto;
 
   & > div > div {
     display: flex;

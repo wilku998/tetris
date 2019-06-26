@@ -17,9 +17,6 @@ const Header = ({ source, level, className, toggleMenuScreen }: propsI) => {
     <header className={className}>
       <Item>Source:{source}</Item>
       <Item>Level:{level}</Item>
-      <IconButton>
-        <ReactSVG src="./svg/music.svg" />
-      </IconButton>
       <IconButton onClick={toggleMenuScreen}>
         <ReactSVG src="./svg/square.svg" />
       </IconButton>
