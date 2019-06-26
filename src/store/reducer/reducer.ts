@@ -184,11 +184,13 @@ export default (state = initialState, action: actionI) => {
       return state;
 
     case togglePause:
-      return {
-        ...state,
-        pause: !pause
-      };
-
+      if (!menuScreenVisible) {
+        return {
+          ...state,
+          pause: !pause
+        };
+      }
+      break;
     case toggleMenuScreen:
       return {
         ...state,
@@ -199,7 +201,8 @@ export default (state = initialState, action: actionI) => {
       return {
         ...initialState,
         record,
-        menuScreenVisible: false
+        menuScreenVisible: false,
+        pause: false
       };
     default:
       return state;

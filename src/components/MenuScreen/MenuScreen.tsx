@@ -8,7 +8,6 @@ export interface propsI {
   toggleMenuScreen: () => void;
   restartGame: () => void;
   gameOver: boolean;
-  pause: boolean;
   record: number;
 }
 
@@ -17,16 +16,17 @@ const MenuScreen = ({
   toggleMenuScreen,
   restartGame,
   gameOver,
-  pause,
   record
 }: propsI) => {
-  const restartVisible = gameOver || pause;
   return (
     <nav className={className}>
       {gameOver && <Title>game over</Title>}
-      <Title margin='big'>Your record:{record}</Title>
-      {!gameOver && <button onClick={toggleMenuScreen}>Play</button>}
-      {restartVisible && <button onClick={restartGame}>{pause ? 'Restart game' : 'Play again'}</button>}
+      <Title margin="big">Your record:{record}</Title>
+      {!gameOver ? (
+        <button onClick={toggleMenuScreen}>Play</button>
+      ) : (
+        <button onClick={restartGame}>Restart game</button>
+      )}
       <button>Turn off music</button>
     </nav>
   );
@@ -39,15 +39,13 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 const mapStateToProps = ({
   gameOver,
-  pause,
   record
 }: {
   gameOver: boolean;
-  pause: boolean;
-  record: number
+  record: number;
 }) => ({
   gameOver,
-  pause, record
+  record
 });
 export default connect(
   mapStateToProps,
