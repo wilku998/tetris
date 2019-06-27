@@ -10,7 +10,7 @@ interface propsI {
 const Block = ({
   block
 }: propsI) => {
-  const { isActive, color, squares } = block;
+  const { color, squares } = block;
   
   return (
     <div style={{border: 'none', width: 0, height: 0}}>

@@ -40,6 +40,7 @@ const App = ({
   fallTimeing
 }: propsI) => {
   useEffect(() => {
+    console.log('app render')
     let rotateBlocked = false;
     const isPlaying = !gameOver && !pause;
     if (isPlaying) {
@@ -100,7 +101,6 @@ const App = ({
 };
 
 interface mapStateToPropsI {
-  blocks: Array<React.FunctionComponent>;
   gameOver: boolean;
   pause: boolean;
   fallTimeing: number;
@@ -109,13 +109,11 @@ interface mapStateToPropsI {
 }
 
 const mapStateToProps = ({
-  blocks,
   gameOver,
   pause,
   fallTimeing,
   menuScreenVisible
 }: mapStateToPropsI) => ({
-  blocks,
   gameOver,
   pause,
   fallTimeing,

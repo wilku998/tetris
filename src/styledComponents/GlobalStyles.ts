@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import media from './media';
+import media, { sizes } from "./media";
 
 export default createGlobalStyle`
     * {
@@ -19,13 +19,31 @@ export default createGlobalStyle`
     html {
         font-size: 55%;
         scroll-behavior: smooth;
+
         ${media.medium`
-            font-size: 50%;
+            font-size: 45%;
         `}
+
+
+        @media only screen and (max-width: 767px) and (orientation: landscape) {
+            transform: rotate(-90deg) translateY(-50%);
+            transform-origin: left top;
+            width: 100vh;
+            overflow-x: hidden;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+        }
+        
+        ${media.medium_2`
+            font-size: 35%;
+        `}
+        
         ${media.small`
-            font-size: 40%;
+            font-size: 30%;
         `}
     }
+
 
 
     body {
