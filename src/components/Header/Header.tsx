@@ -6,16 +6,16 @@ import style, { Item, IconButton } from "./headerStyles";
 import { toggleMenuScreenAction } from "../../store/actions";
 
 export interface propsI {
-  source: number;
+  score: number;
   level: number;
   className: string;
   toggleMenuScreen: () => void
 }
 
-const Header = ({ source, level, className, toggleMenuScreen }: propsI) => {
+const Header = ({ score, level, className, toggleMenuScreen }: propsI) => {
   return (
     <header className={className}>
-      <Item>Source:{source}</Item>
+      <Item>Score:{score}</Item>
       <Item>Level:{level}</Item>
       <IconButton onClick={toggleMenuScreen}>
         <ReactSVG src="./svg/square.svg" />
@@ -25,12 +25,12 @@ const Header = ({ source, level, className, toggleMenuScreen }: propsI) => {
 };
 
 interface mapStateToPropsI {
-  source: number;
+  score: number;
   level: number;
 }
 
-const mapStateToProps = ({ source, level }: mapStateToPropsI) => ({
-  source,
+const mapStateToProps = ({ score, level }: mapStateToPropsI) => ({
+  score,
   level
 });
 

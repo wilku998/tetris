@@ -1,7 +1,10 @@
 # Tetris game
+* [About](#about)
 * [Technologies](#technologies)
 * [Setup](#setup)
 
+## About
+Simple Tetris game with 3 difficulty levels that depends on the player score. The game can be controlled by key arrows and buttons in the control panel.
 
 ## Technologies
 Project is created with:

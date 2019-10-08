@@ -32,7 +32,7 @@ export default (state = createInitialState(), action: actionI) => {
     blocks,
     gameOver,
     pause,
-    source,
+    score,
     level,
     menuScreenVisible,
     record
@@ -66,7 +66,7 @@ export default (state = createInitialState(), action: actionI) => {
           ...state,
           gameOver: true,
           menuScreenVisible: true,
-          record: source > record ? source : record
+          record: score > record ? score : record
         };
       } else if (!gameOver) {
         //block generate, removing row if is full
@@ -86,13 +86,11 @@ export default (state = createInitialState(), action: actionI) => {
           newBlock
         ];
 
-        const newBlockSource = newBlock.squares.length;
-
-        const sourceToAdd =
+        const scoreToAdd =
           newBlock.squares.length + (fullRowsY.length > 0 ? 100 : 0) * level;
-        const newSource = source + sourceToAdd;
+        const newScore = score + scoreToAdd;
 
-        const [newLevel, newFallTimeing] = getLevelAndFallTimeing(newSource);
+        const [newLevel, newFallTimeing] = getLevelAndFallTimeing(newScore);
 
         return {
           ...state,
@@ -100,7 +98,7 @@ export default (state = createInitialState(), action: actionI) => {
             fullRowsY.length > 0
               ? filterFullRowBlocks(newBlocks, fullRowsY)
               : newBlocks,
-          source: newSource,
+          score: newScore,
           level: newLevel,
           fallTimeing: newFallTimeing
         };

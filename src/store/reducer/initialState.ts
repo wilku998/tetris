@@ -6,7 +6,7 @@ export default () => {
     blocks,
     gameOver: false,
     pause: true,
-    source: blocks[0].squares.length,
+    score: blocks[0].squares.length,
     level: 1,
     fallTimeing: 500,
     menuScreenVisible: true,
