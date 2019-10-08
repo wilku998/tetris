@@ -1,7 +1,7 @@
 import allBlocks from "../../../staticData/blocks/allBlocks";
 import theme from '../../../styledComponents/theme';
 
-const colors = [theme.colorBlue, theme.colorGreen, theme.colorPink];
+const colors = [theme.blockBlue, theme.blockBlueLight, theme.blockGreen, theme.blockRed];
 
 export default () => {
   const id = Date.now().toString();

@@ -1,11 +1,10 @@
 export default {
 	purpleBorder: '1px solid #722DFF',
 	colorPurple: '#722DFF',
-	
-	colorGreen: '#13CF6A',
-	colorBlue: '#036AFA',
-	colorPink: '#C96190',
-	
+	blockBlue: '/block-blue.jpg',
+	blockBlueLight: '/block-blue-light.jpg',
+	blockGreen: '/block-green.jpg',
+	blockRed: '/block-red.jpg',
 	colorGrey1: '#1A1A1A',
 	colorGrey2: 'rgb(59, 59, 59)',
 	colorGrey3: '#444',

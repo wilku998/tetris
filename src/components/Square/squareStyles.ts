@@ -15,6 +15,6 @@ export default styled.div.attrs(({ x, y }: { x: number; y: number }) => ({
   }: {
     color: string;
   }) => `
-        background-color: ${color};
+        background: url(${color}) center/cover;
     `}
 `;
